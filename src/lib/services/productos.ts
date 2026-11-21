@@ -17,9 +17,6 @@ import { requireAdmin } from "@/lib/auth/session";
 import { moverStock } from "./stock";
 import { formatNumeroFactura, sqliteToIso } from "@/lib/format";
 
-/**
- * Arma el DTO público de un producto con categoría y marca de stock bajo el mínimo (RF-P1).
- */
 function mapProducto(
   producto: typeof productos.$inferSelect,
   categoria: { id: number; nombre: string },
@@ -37,9 +34,6 @@ function mapProducto(
   };
 }
 
-/**
- * RF-P1 — Catálogo paginado con búsqueda, filtro por categoría y productos bajo mínimo.
- */
 export async function listProductos(
   user: SessionUser,
   query: {
@@ -54,7 +48,6 @@ export async function listProductos(
   const conditions = [];
 
   if (query.activo === "todos" && user.rol === "admin") {
-    // sin filtro
   } else if (query.activo === "false") {
     conditions.push(eq(productos.activo, false));
   } else {
@@ -104,9 +97,6 @@ export async function listProductos(
   };
 }
 
-/**
- * RF-P1 — Ficha de un producto por id.
- */
 export async function getProducto(_user: SessionUser, id: number) {
   const row = await db
     .select({
@@ -124,9 +114,6 @@ export async function getProducto(_user: SessionUser, id: number) {
   return mapProducto(row[0].producto, row[0].categoria);
 }
 
-/**
- * RF-P2 — Alta de producto; el stock inicial se registra como ingreso (regla 2).
- */
 export async function createProducto(user: SessionUser, raw: unknown) {
   requireAdmin(user);
   const data = createProductoSchema.parse(raw);
@@ -177,9 +164,6 @@ export async function createProducto(user: SessionUser, raw: unknown) {
   });
 }
 
-/**
- * RF-P2 / RF-P3 — Edición y baja lógica; la existencia no se modifica a mano (regla 2).
- */
 export async function updateProducto(
   user: SessionUser,
   id: number,
@@ -239,9 +223,6 @@ export async function updateProducto(
   return mapProducto(updated, categoria!);
 }
 
-/**
- * RF-P6 — Historial de movimientos de stock de un producto (paginado).
- */
 export async function listMovimientosProducto(
   _user: SessionUser,
   productoId: number,
@@ -304,9 +285,6 @@ export async function listMovimientosProducto(
   };
 }
 
-/**
- * RF-P6 — Listado global de movimientos de stock con filtros opcionales.
- */
 export async function listMovimientosStock(
   _user: SessionUser,
   query: {

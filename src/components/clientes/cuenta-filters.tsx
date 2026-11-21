@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Cluster } from "@/components/layout/cluster";
 
-/** RF-C4 — Filtros de fecha para la cuenta corriente. */
 export function CuentaFilters({ clienteId }: { clienteId: number }) {
   const router = useRouter();
   const sp = useSearchParams();

@@ -7,7 +7,6 @@ export function Money({
   className,
 }: {
   value?: number;
-  /** Alias de value (usado por páginas del agente UI). */
   centavos?: number;
   className?: string;
 }) {

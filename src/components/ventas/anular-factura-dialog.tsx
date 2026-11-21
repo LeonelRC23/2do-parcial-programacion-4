@@ -16,7 +16,6 @@ import { Label } from "@/components/ui/label";
 import { anularFacturaAction } from "@/actions/facturas";
 import { anularFacturaSchema } from "@/lib/schemas/facturas";
 
-/** RF-V9 — Anulación con motivo obligatorio (Server Action). */
 export function AnularFacturaDialog({ facturaId }: { facturaId: number }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);

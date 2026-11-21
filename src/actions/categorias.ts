@@ -7,7 +7,6 @@ import {
   updateCategoria,
 } from "@/lib/services/categorias";
 
-/** RF-P7 — Alta de categoría (admin). */
 export async function crearCategoriaAction(raw: unknown) {
   const result = await runAction((user) => createCategoria(user, raw), {
     admin: true,
@@ -16,7 +15,6 @@ export async function crearCategoriaAction(raw: unknown) {
   return result;
 }
 
-/** RF-P7 — Edición / desactivación de categoría (admin). */
 export async function actualizarCategoriaAction(
   categoriaId: number,
   raw: unknown,

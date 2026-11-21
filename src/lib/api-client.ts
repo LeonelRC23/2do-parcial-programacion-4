@@ -1,7 +1,3 @@
-/**
- * Error lanzado en el cliente cuando una respuesta `/api` no es exitosa.
- * Expone status HTTP, código de negocio y detalles opcionales.
- */
 export class ApiClientError extends Error {
   status: number;
   code: string;
@@ -20,16 +16,8 @@ export class ApiClientError extends Error {
   }
 }
 
-/** Alias histórico usado por algunos componentes de UI. */
 export { ApiClientError as ClientApiError };
 
-/**
- * Cliente fetch tipado hacia la API REST.
- * Parsea JSON, trata 204 como vacío y lanza `ApiClientError` si falla.
- *
- * @param url Ruta relativa (ej. `/api/productos`).
- * @param init Opciones de `fetch` (method, body, headers…).
- */
 export async function fetchJson<T = unknown>(
   url: string,
   init?: RequestInit,

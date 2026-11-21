@@ -29,7 +29,6 @@ function pesosToCentavos(value: string): number {
   return Math.round(Number(value.replace(/\./g, "").replace(",", ".")) * 100);
 }
 
-/** RF-C5 — Registra pago y redirige al recibo imprimible. */
 export function RegistrarPagoDialog({
   clienteId,
   saldo,

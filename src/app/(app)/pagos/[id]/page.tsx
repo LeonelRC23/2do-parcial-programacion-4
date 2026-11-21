@@ -16,7 +16,6 @@ const MEDIOS: Record<string, string> = {
   tarjeta_debito: "Tarjeta débito",
 };
 
-/** RF-C5 — Recibo de pago imprimible. */
 export default async function ReciboPagoPage({
   params,
 }: {

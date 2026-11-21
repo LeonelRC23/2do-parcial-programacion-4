@@ -36,7 +36,6 @@ type ProductoEdit = {
   stockMinimo: number;
 };
 
-/** RF-P2 — Formulario de edición de producto (Server Action + Zod). */
 export function ProductoEditDialog({
   producto,
   categorias,

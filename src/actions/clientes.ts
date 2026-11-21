@@ -8,7 +8,6 @@ import {
 } from "@/lib/services/clientes";
 import { registrarPago } from "@/lib/services/pagos";
 
-/** RF-C2 / RF-V2 — Alta de cliente. */
 export async function crearClienteAction(raw: unknown) {
   const result = await runAction((user) => createCliente(user, raw));
   if (result.ok) {
@@ -18,7 +17,6 @@ export async function crearClienteAction(raw: unknown) {
   return result;
 }
 
-/** RF-C2 / RF-C7 — Edición o baja lógica de cliente. */
 export async function actualizarClienteAction(
   clienteId: number,
   raw: unknown,
@@ -34,7 +32,6 @@ export async function actualizarClienteAction(
   return result;
 }
 
-/** RF-C5 — Registrar pago en cuenta corriente. */
 export async function registrarPagoAction(
   clienteId: number,
   raw: unknown,

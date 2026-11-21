@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { actualizarProductoAction } from "@/actions/productos";
 
-/** RF-P3 — Baja lógica del producto (admin, con confirmación). */
 export function ProductoBajaButton({
   productoId,
   activo,

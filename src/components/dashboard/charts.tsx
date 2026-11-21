@@ -26,7 +26,6 @@ ChartJS.register(
   Filler,
 );
 
-/** RF-T2 — Ventas diarias de los últimos 30 días. */
 export function VentasDiariasChart({
   data,
 }: {
@@ -85,7 +84,6 @@ export function VentasDiariasChart({
   );
 }
 
-/** RF-T2 — Distribución del mes por forma de pago (debajo del gráfico de líneas). */
 export function FormaPagoChart({
   data,
 }: {

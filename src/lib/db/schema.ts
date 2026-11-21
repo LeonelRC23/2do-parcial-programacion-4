@@ -7,8 +7,6 @@ import {
   index,
 } from "drizzle-orm/sqlite-core";
 
-/** Modelo de datos mínimo — sección 7 del enunciado. */
-
 export const usuarios = sqliteTable("usuarios", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   email: text("email").notNull().unique(),
@@ -39,7 +37,6 @@ export const productos = sqliteTable(
     categoriaId: integer("categoria_id")
       .notNull()
       .references(() => categorias.id),
-    /** Precio en centavos. */
     precio: integer("precio").notNull(),
     existencia: integer("existencia").notNull().default(0),
     stockMinimo: integer("stock_minimo").notNull().default(0),
@@ -61,7 +58,6 @@ export const movimientosStock = sqliteTable(
     tipo: text("tipo", {
       enum: ["venta", "anulacion", "ingreso", "egreso"],
     }).notNull(),
-    /** Cantidad con signo (negativa en venta/egreso). */
     cantidad: integer("cantidad").notNull(),
     existenciaResultante: integer("existencia_resultante").notNull(),
     motivo: text("motivo"),
@@ -89,7 +85,6 @@ export const clientes = sqliteTable(
     id: integer("id").primaryKey({ autoIncrement: true }),
     tipoDoc: text("tipo_doc", { enum: ["DNI", "CUIT"] }).notNull(),
     nroDoc: text("nro_doc").notNull(),
-    /** Documento normalizado sin puntos ni guiones, para búsquedas. */
     nroDocNorm: text("nro_doc_norm").notNull(),
     nombre: text("nombre").notNull(),
     domicilio: text("domicilio"),
@@ -98,7 +93,6 @@ export const clientes = sqliteTable(
     cuentaCorriente: integer("cuenta_corriente", { mode: "boolean" })
       .notNull()
       .default(false),
-    /** Límite en centavos; null = sin límite. */
     limiteCredito: integer("limite_credito"),
     activo: integer("activo", { mode: "boolean" }).notNull().default(true),
     createdAt: text("created_at")
@@ -121,7 +115,6 @@ export const facturas = sqliteTable(
     usuarioId: integer("usuario_id")
       .notNull()
       .references(() => usuarios.id),
-    /** Total en centavos. */
     total: integer("total").notNull(),
     formaPago: text("forma_pago", {
       enum: ["contado", "tarjeta", "cuenta_corriente"],

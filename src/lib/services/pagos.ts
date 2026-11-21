@@ -17,9 +17,6 @@ import {
 } from "@/lib/format";
 import { saldoCliente } from "./clientes";
 
-/**
- * Regla 4 — Obtiene y reserva el próximo número correlativo de recibo de pago (sin huecos).
- */
 async function nextReciboNumero(tx: Tx): Promise<number> {
   const clave = "recibo";
   const contadorExistente = await tx.query.contadores.findFirst({
@@ -37,9 +34,6 @@ async function nextReciboNumero(tx: Tx): Promise<number> {
   return siguienteNumero;
 }
 
-/**
- * Arma el DTO público de un pago con cliente, usuario y saldo resultante.
- */
 function mapPago(
   pago: typeof pagos.$inferSelect,
   cliente: { id: number; nombre: string },
@@ -59,10 +53,6 @@ function mapPago(
   };
 }
 
-/**
- * RF-C5 — Registra un pago en cuenta corriente: recibo numerado, crédito en movimientos (regla 8).
- * @throws PAGO_SUPERA_DEUDA si el importe supera el saldo pendiente.
- */
 export async function registrarPago(
   user: SessionUser,
   clienteId: number,
@@ -127,9 +117,6 @@ export async function registrarPago(
   });
 }
 
-/**
- * RF-C5 — Devuelve un recibo de pago para reimpresión, con saldo actual del cliente.
- */
 export async function getPago(_user: SessionUser, id: number) {
   const pago = await db.query.pagos.findFirst({
     where: eq(pagos.id, id),

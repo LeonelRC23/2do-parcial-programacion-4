@@ -26,7 +26,6 @@ import { fetchJson, ClientApiError } from "@/lib/api-client";
 
 type Categoria = { id: number; nombre: string };
 
-/** Convierte pesos (string "1234,50") a centavos. */
 function pesosToCentavos(value: string): number {
   const n = Number(value.replace(/\./g, "").replace(",", "."));
   return Math.round(n * 100);

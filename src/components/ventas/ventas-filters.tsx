@@ -14,7 +14,6 @@ import {
 import { Cluster } from "@/components/layout/cluster";
 import { Card, CardContent } from "@/components/ui/card";
 
-/** RF-V8 — Filtros: fechas, cliente, forma, vendedor, estado y búsqueda. */
 export function VentasFilters({
   clientes,
   vendedores,

@@ -11,13 +11,9 @@ import { fechaArgentina } from "@/lib/format";
 import { formatInTimeZone } from "date-fns-tz";
 import { subDays, parseISO } from "date-fns";
 
-/**
- * RF-T1 a RF-T3 — Indicadores del tablero: ventas hoy/mes, deudas CC, bajo mínimo,
- * gráficos 30 días, ventas por forma de pago y top 5 productos del mes (regla 7).
- */
 export async function getTablero(_user: SessionUser) {
   const hoy = fechaArgentina();
-  const mes = hoy.slice(0, 7); // YYYY-MM
+  const mes = hoy.slice(0, 7);
 
   const [hoyStats] = await db
     .select({
@@ -80,7 +76,6 @@ export async function getTablero(_user: SessionUser) {
       ),
     );
 
-  // Ventas diarias últimos 30 días
   const ventasPorDia = await db
     .select({
       fecha: sql<string>`date(${facturas.fecha}, '-3 hours')`,
@@ -106,7 +101,6 @@ export async function getTablero(_user: SessionUser) {
       "UTC",
       "yyyy-MM-dd",
     );
-    // Usar fecha local ar calculada
     const fecha = (() => {
       const base = parseISO(hoy + "T12:00:00Z");
       base.setUTCDate(base.getUTCDate() - diasAtras);

@@ -1,7 +1,3 @@
-/**
- * Datos iniciales — sección 8 / 10.7.
- * Crea facturas y pagos con los mismos servicios que la app.
- */
 import "dotenv/config";
 import { eq } from "drizzle-orm";
 import { db } from "../src/lib/db";
@@ -67,14 +63,13 @@ function buildProductos() {
         codigo: `${t.pref}-${String(n).padStart(3, "0")}`,
         descripcion: desc,
         cat: t.cat,
-        precio: (800 + n * 137) * 100, // centavos
+        precio: (800 + n * 137) * 100,
         stockMinimo: 5,
         stockInicial: 20 + (n % 15),
       });
       n++;
     }
   }
-  // completar hasta 30
   while (PRODUCTOS_BASE.length < 30) {
     const i = PRODUCTOS_BASE.length + 1;
     PRODUCTOS_BASE.push({
@@ -194,11 +189,9 @@ async function main() {
     const daysAgo = facturasCreadas % 30;
     const user = facturasCreadas % 3 === 0 ? ADMIN : VENDEDOR;
     const forma = formas[facturasCreadas % 3];
-    // Una unidad por renglón para no agotar stock (regla 1).
     const productoId = prodIds[facturasCreadas % prodIds.length];
     const items = [{ productoId, cantidad: 1 }];
 
-    // Reponer stock si hace falta antes de vender.
     try {
       await registrarMovimientoManual(ADMIN, productoId, {
         tipo: "ingreso",
@@ -207,7 +200,6 @@ async function main() {
         observacion: "Seed automático",
       });
     } catch {
-      // Si ya hay stock, seguir.
     }
 
     let clienteId: number | null = null;

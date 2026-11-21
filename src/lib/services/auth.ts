@@ -9,9 +9,6 @@ import {
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
 import type { SessionUser } from "@/lib/auth/session";
 
-/**
- * Proyecta un usuario de DB a la forma pública de la API (sin passwordHash).
- */
 function toPublicUser(usuario: {
   id: number;
   nombre: string;
@@ -26,12 +23,6 @@ function toPublicUser(usuario: {
   };
 }
 
-/**
- * RF-U1 — Inicia sesión con email y contraseña.
- * Mensaje único si el email no existe, la contraseña no coincide o el usuario está inactivo.
- * @param raw Cuerpo sin validar `{ email, password }`.
- * @returns Usuario público (el Route Handler setea la cookie).
- */
 export async function login(raw: unknown) {
   const credentials = loginSchema.parse(raw);
 
@@ -62,12 +53,6 @@ export async function login(raw: unknown) {
   return toPublicUser(usuario);
 }
 
-/**
- * RF-U5 — Cambia la contraseña del usuario conectado.
- * Exige la contraseña actual y una nueva de al menos 8 caracteres.
- * @param sessionUser Usuario autenticado.
- * @param raw Cuerpo `{ actual, nueva }`.
- */
 export async function changePassword(sessionUser: SessionUser, raw: unknown) {
   const passwords = changePasswordSchema.parse(raw);
 

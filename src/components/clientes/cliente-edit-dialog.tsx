@@ -39,7 +39,6 @@ type ClienteEdit = {
   limiteCredito: number | null;
 };
 
-/** RF-C2 — Edición de cliente (Server Action + Zod). */
 export function ClienteEditDialog({ cliente }: { cliente: ClienteEdit }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);

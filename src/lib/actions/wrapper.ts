@@ -15,11 +15,6 @@ export type ActionFail = {
 };
 export type ActionResult<T> = ActionOk<T> | ActionFail;
 
-/**
- * Envoltorio de Server Actions (sección 10.3).
- * Exige sesión, llama al servicio y devuelve `{ ok, data }` o `{ ok: false, error }`
- * sin lanzar, para mostrar errores junto al campo en el formulario.
- */
 export async function runAction<T>(
   fn: (user: SessionUser) => Promise<T>,
   options: { admin?: boolean } = {},

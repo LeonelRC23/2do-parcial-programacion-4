@@ -1,12 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 
-/** Mantiene el mismo nombre que SESSION_COOKIE en session.ts (evita importar DB en el proxy). */
 const SESSION_COOKIE = "gc_session";
 
-/**
- * RF-U2 — Middleware de sesión: bloquea rutas y API sin cookie válida,
- * excepto `/login` y `POST /api/auth/login`; redirige usuarios autenticados fuera de `/login`.
- */
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
@@ -51,7 +46,6 @@ export function proxy(request: NextRequest) {
   return NextResponse.next();
 }
 
-/** Rutas sobre las que corre el proxy (excluye estáticos y archivos con extensión). */
 export const config = {
   matcher: ["/((?!_next/static|_next/image|.*\\..*).*)"],
 };

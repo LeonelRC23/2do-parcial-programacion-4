@@ -3,7 +3,6 @@ import { ZodError } from "zod";
 import { ApiError } from "./errors";
 import { getSessionUser, type SessionUser } from "@/lib/auth/session";
 
-/** Contexto inyectado a cada Route Handler envuelto. */
 type HandlerContext = {
   user: SessionUser | null;
   params: Record<string, string>;
@@ -13,16 +12,10 @@ type HandlerContext = {
 type RouteHandler = (context: HandlerContext) => Promise<Response | NextResponse>;
 
 type ApiHandlerOptions = {
-  /** Si false, no exige sesión (solo login). Por defecto true. */
   auth?: boolean;
-  /** Si true, exige rol admin. */
   admin?: boolean;
 };
 
-/**
- * Envoltorio común de Route Handlers (sección 10.3 / 11.1).
- * Resuelve sesión, aplica permisos y traduce errores al formato estándar.
- */
 export function apiHandler(
   handler: RouteHandler,
   options: ApiHandlerOptions = {},
@@ -61,10 +54,6 @@ export function apiHandler(
   };
 }
 
-/**
- * Lee y parsea el cuerpo JSON de un pedido.
- * @throws ApiError 400 JSON_INVALIDO si el cuerpo no es JSON válido.
- */
 export async function readJson(request: NextRequest): Promise<unknown> {
   try {
     return await request.json();
@@ -73,20 +62,14 @@ export async function readJson(request: NextRequest): Promise<unknown> {
   }
 }
 
-/** Respuesta JSON con el status HTTP indicado (por defecto 200). */
 export function json(data: unknown, status = 200) {
   return NextResponse.json(data, { status });
 }
 
-/** Respuesta vacía 204 (logout, cambio de contraseña, etc.). */
 export function noContent() {
   return new NextResponse(null, { status: 204 });
 }
 
-/**
- * Traduce cualquier error al formato estándar de la API (sección 11.1 / 11.8).
- * Los errores inesperados se registran en el servidor sin filtrar detalles al cliente.
- */
 export function toErrorResponse(error: unknown) {
   if (error instanceof ApiError) {
     return NextResponse.json(error.toJSON(), { status: error.status });
@@ -121,10 +104,6 @@ export function toErrorResponse(error: unknown) {
   );
 }
 
-/**
- * Lee `page` y `pageSize` de la query (paginación §11.1).
- * pageSize se acota entre 1 y 100; por defecto 20.
- */
 export function parsePagination(url: URL) {
   const page = Math.max(1, Number(url.searchParams.get("page") ?? 1) || 1);
   const requestedPageSize =

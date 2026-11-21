@@ -24,9 +24,6 @@ import {
 import { moverStock } from "./stock";
 import { saldoCliente } from "./clientes";
 
-/**
- * Regla 4 — Obtiene y reserva el próximo número correlativo de factura.
- */
 async function nextFacturaNumero(tx: Tx): Promise<number> {
   const clave = "factura";
   const contadorExistente = await tx.query.contadores.findFirst({
@@ -44,9 +41,6 @@ async function nextFacturaNumero(tx: Tx): Promise<number> {
   return siguienteNumero;
 }
 
-/**
- * RF-V7 — Arma la respuesta completa de una factura (ítems, pago, anulación y saldo si aplica).
- */
 async function buildFacturaResponse(facturaId: number) {
   const factura = await db.query.facturas.findFirst({
     where: eq(facturas.id, facturaId),
@@ -134,11 +128,7 @@ async function buildFacturaResponse(facturaId: number) {
   return result;
 }
 
-/**
- * RF-V1 a RF-V6 — Emite factura en una transacción: stock, numeración, débito en CC (reglas 1–7, 9).
- */
 export async function crearFactura(user: SessionUser, raw: unknown) {
-  // Rechazar número completo de tarjeta si aparece
   if (raw && typeof raw === "object") {
     const pago = (raw as { pago?: { tarjeta?: Record<string, unknown> } }).pago;
     if (pago?.tarjeta) {
@@ -154,7 +144,6 @@ export async function crearFactura(user: SessionUser, raw: unknown) {
   const data = crearFacturaSchema.parse(raw);
 
   return db.transaction(async (tx) => {
-    // 1-2. Validar productos y cliente
     let cliente = null;
     if (data.clienteId) {
       cliente = await tx.query.clientes.findFirst({
@@ -218,7 +207,6 @@ export async function crearFactura(user: SessionUser, raw: unknown) {
       throw new ApiError(409, "STOCK_INSUFICIENTE", "Stock insuficiente.", stockErrors);
     }
 
-    // 5. Validar forma de pago
     let montoRecibido: number | null = null;
     if (data.pago.forma === "contado") {
       montoRecibido = data.pago.montoRecibido ?? total;
@@ -250,13 +238,11 @@ export async function crearFactura(user: SessionUser, raw: unknown) {
       }
     }
 
-    // 6. Número correlativo
     const numero = await nextFacturaNumero(tx);
 
     const tarjeta =
       data.pago.forma === "tarjeta" ? data.pago.tarjeta : null;
 
-    // 7. Grabar factura e ítems
     const [factura] = await tx
       .insert(facturas)
       .values({
@@ -285,7 +271,6 @@ export async function crearFactura(user: SessionUser, raw: unknown) {
         subtotal: linea.subtotal,
       });
 
-      // 8. Descontar stock (atómico vía moverStock)
       await moverStock(tx, {
         productoId: linea.producto.id,
         cantidad: -linea.cantidad,
@@ -295,7 +280,6 @@ export async function crearFactura(user: SessionUser, raw: unknown) {
       });
     }
 
-    // 9. Débito en cuenta corriente
     if (data.pago.forma === "cuenta_corriente" && cliente) {
       await tx.insert(movimientosCuenta).values({
         clienteId: cliente.id,
@@ -306,7 +290,6 @@ export async function crearFactura(user: SessionUser, raw: unknown) {
       });
     }
 
-    // Construir respuesta dentro de la TX leyendo lo insertado
     const items = await tx
       .select()
       .from(facturaItems)
@@ -364,9 +347,6 @@ export async function crearFactura(user: SessionUser, raw: unknown) {
   });
 }
 
-/**
- * RF-V8 — Listado paginado de facturas con filtros y total emitido en el conjunto filtrado.
- */
 export async function listFacturas(
   _user: SessionUser,
   query: {
@@ -472,16 +452,10 @@ export async function listFacturas(
   };
 }
 
-/**
- * RF-V7 — Detalle de una factura para vista o comprobante.
- */
 export async function getFactura(_user: SessionUser, id: number) {
   return buildFacturaResponse(id);
 }
 
-/**
- * RF-V1 — Consulta informativa del próximo número de factura (regla 4).
- */
 export async function proximoNumero(_user: SessionUser) {
   const row = await db.query.contadores.findFirst({
     where: eq(contadores.clave, "factura"),
@@ -492,9 +466,6 @@ export async function proximoNumero(_user: SessionUser) {
   };
 }
 
-/**
- * RF-V9 — Anulación (solo admin): reingresa stock y crédito en CC (reglas 2, 5, 7).
- */
 export async function anularFactura(
   user: SessionUser,
   id: number,

@@ -13,9 +13,6 @@ import {
 import type { SessionUser } from "@/lib/auth/session";
 import { requireAdmin } from "@/lib/auth/session";
 
-/**
- * Proyecta un usuario de la tabla a la forma pública (sin passwordHash).
- */
 function toPublicUsuario(usuario: typeof usuarios.$inferSelect) {
   return {
     id: usuario.id,
@@ -27,10 +24,6 @@ function toPublicUsuario(usuario: typeof usuarios.$inferSelect) {
   };
 }
 
-/**
- * RF-U4 — Lista usuarios paginados (solo administrador).
- * Filtros opcionales por texto (`q` en nombre/email) y estado `activo`.
- */
 export async function listUsuarios(
   sessionUser: SessionUser,
   query: { q?: string; activo?: string; page: number; pageSize: number },
@@ -74,10 +67,6 @@ export async function listUsuarios(
   };
 }
 
-/**
- * RF-U4 — Alta de usuario con rol y contraseña temporal (solo admin).
- * @throws EMAIL_DUPLICADO (409) si el email ya existe.
- */
 export async function createUsuario(sessionUser: SessionUser, raw: unknown) {
   requireAdmin(sessionUser);
   const nuevoUsuario = createUsuarioSchema.parse(raw);
@@ -104,10 +93,6 @@ export async function createUsuario(sessionUser: SessionUser, raw: unknown) {
   return toPublicUsuario(usuarioCreado);
 }
 
-/**
- * RF-U4 — Edición y baja lógica de usuario (solo admin).
- * Impide que un admin se desactive o se quite el rol a sí mismo (OPERACION_SOBRE_SI_MISMO).
- */
 export async function updateUsuario(
   sessionUser: SessionUser,
   usuarioId: number,
@@ -156,10 +141,6 @@ export async function updateUsuario(
   return toPublicUsuario(usuarioActualizado);
 }
 
-/**
- * RF-U5 — Restablece la contraseña de un usuario (solo admin).
- * Devuelve la contraseña temporal una sola vez para mostrarla al administrador.
- */
 export async function resetPassword(
   sessionUser: SessionUser,
   usuarioId: number,

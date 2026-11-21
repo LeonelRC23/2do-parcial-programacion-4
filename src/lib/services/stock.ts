@@ -10,7 +10,6 @@ type TipoMovimiento = "venta" | "anulacion" | "ingreso" | "egreso";
 
 type MoverStockInput = {
   productoId: number;
-  /** Delta con signo: negativo descuenta, positivo suma. */
   cantidad: number;
   tipo: TipoMovimiento;
   motivo?: string | null;
@@ -19,17 +18,6 @@ type MoverStockInput = {
   usuarioId: number;
 };
 
-/**
- * Regla 1 y 2 / sección 10.2 — Única función que modifica la existencia de un producto.
- * Actualiza con condición atómica (`existencia >= cantidad pedida` al descontar)
- * y graba el movimiento de stock en la misma transacción.
- * Ventas, anulaciones, ingresos y egresos deben llamar solo a esta función.
- *
- * @param tx Transacción Drizzle abierta por el llamador.
- * @param input Delta, tipo de movimiento y metadatos.
- * @returns El movimiento de stock insertado.
- * @throws STOCK_INSUFICIENTE (409) si un descuento dejaría la existencia negativa.
- */
 export async function moverStock(tx: Tx, input: MoverStockInput) {
   const {
     productoId,
@@ -48,7 +36,6 @@ export async function moverStock(tx: Tx, input: MoverStockInput) {
   let filasActualizadas: { existencia: number }[];
 
   if (cantidad < 0) {
-    // Regla 1: UPDATE condicional — si no alcanza stock, 0 filas.
     const cantidadADescontar = -cantidad;
     filasActualizadas = await tx
       .update(productos)
@@ -104,14 +91,6 @@ export async function moverStock(tx: Tx, input: MoverStockInput) {
   return movimiento;
 }
 
-/**
- * RF-P4 / RF-P5 — Registra un ingreso o egreso manual de stock (solo admin).
- * Valida el cuerpo con Zod, abre una transacción y delega en `moverStock`.
- *
- * @param sessionUser Usuario autenticado (debe ser admin).
- * @param productoId Id del producto a ajustar.
- * @param raw Cuerpo `{ tipo, cantidad, motivo, observacion? }`.
- */
 export async function registrarMovimientoManual(
   sessionUser: SessionUser,
   productoId: number,

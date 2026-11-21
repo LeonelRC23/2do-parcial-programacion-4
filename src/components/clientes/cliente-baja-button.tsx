@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { ConfirmDialog } from "@/components/shared/confirm-dialog";
 import { actualizarClienteAction } from "@/actions/clientes";
 
-/** RF-C7 — Baja lógica del cliente (con confirmación). */
 export function ClienteBajaButton({
   clienteId,
   activo,

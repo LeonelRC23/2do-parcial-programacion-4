@@ -1,4 +1,3 @@
-/** Códigos de error de la sección 11.8 del enunciado. */
 export type ErrorCode =
   | "JSON_INVALIDO"
   | "NO_AUTENTICADO"
@@ -23,27 +22,16 @@ export type ErrorCode =
   | "OPERACION_SOBRE_SI_MISMO"
   | "ERROR_INTERNO";
 
-/** Detalle opcional por campo o por producto en errores de validación/stock. */
 export type ErrorDetail = Record<string, unknown> & {
   campo?: string;
   mensaje?: string;
 };
 
-/**
- * Error de dominio único lanzado por los servicios (sección 10.4).
- * Los adaptadores HTTP lo convierten al JSON estándar de la API.
- */
 export class ApiError extends Error {
   status: number;
   code: ErrorCode;
   details?: ErrorDetail[];
 
-  /**
-   * @param status Código HTTP (400–422, 409, 500…).
-   * @param code Código de negocio de la sección 11.8.
-   * @param message Mensaje legible para la UI.
-   * @param details Lista opcional de detalles por campo/producto.
-   */
   constructor(
     status: number,
     code: ErrorCode,
@@ -57,7 +45,6 @@ export class ApiError extends Error {
     this.details = details;
   }
 
-  /** Forma JSON del error según la sección 11.1. */
   toJSON() {
     return {
       error: {

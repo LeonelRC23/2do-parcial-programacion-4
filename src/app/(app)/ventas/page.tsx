@@ -22,7 +22,6 @@ import {
 import { VentasFilters } from "@/components/ventas/ventas-filters";
 import { Stack } from "@/components/layout/stack";
 
-/** RF-V8 — Listado de facturas con filtros completos. */
 export default async function VentasPage({
   searchParams,
 }: {

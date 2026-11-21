@@ -19,7 +19,6 @@ export function StatusBadge({
   variant = "default",
 }: {
   children?: React.ReactNode;
-  /** Estado predefinido: emitida, anulada, activo, inactivo, bajo-minimo, etc. */
   status?: string;
   variant?: keyof typeof STYLES;
 }) {

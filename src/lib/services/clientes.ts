@@ -17,10 +17,6 @@ import {
   sqliteToIso,
 } from "@/lib/format";
 
-/**
- * Regla 7 — Calcula el saldo del cliente como débitos menos créditos,
- * opcionalmente solo hasta una fecha exclusiva.
- */
 export async function saldoCliente(
   clienteId: number,
   untilExclusive?: string,
@@ -40,9 +36,6 @@ export async function saldoCliente(
   return Number(row?.saldo ?? 0);
 }
 
-/**
- * Arma el DTO público de un cliente con saldo, disponible de crédito y estado.
- */
 function mapCliente(
   cliente: typeof clientes.$inferSelect,
   saldo: number,
@@ -65,9 +58,6 @@ function mapCliente(
   };
 }
 
-/**
- * RF-C1 / RF-C6 — Listado con saldo; filtros por búsqueda, deuda y orden por saldo o nombre.
- */
 export async function listClientes(
   _user: SessionUser,
   query: {
@@ -134,9 +124,6 @@ export async function listClientes(
   };
 }
 
-/**
- * RF-C3 — Ficha del cliente con saldo actual y últimas facturas emitidas.
- */
 export async function getCliente(_user: SessionUser, id: number) {
   const cliente = await db.query.clientes.findFirst({
     where: eq(clientes.id, id),
@@ -166,9 +153,6 @@ export async function getCliente(_user: SessionUser, id: number) {
   };
 }
 
-/**
- * RF-C2 / RF-V2 — Alta de cliente con documento único normalizado.
- */
 export async function createCliente(_user: SessionUser, raw: unknown) {
   const data = createClienteSchema.parse(raw);
   const nroDocNorm = normalizarDocumento(data.nroDoc);
@@ -205,9 +189,6 @@ export async function createCliente(_user: SessionUser, raw: unknown) {
   return mapCliente(created, 0);
 }
 
-/**
- * RF-C2 / RF-C7 — Edición y baja lógica; no desactiva ni deshabilita CC con saldo pendiente.
- */
 export async function updateCliente(
   _user: SessionUser,
   id: number,
@@ -271,9 +252,6 @@ export async function updateCliente(
   return mapCliente(updated, saldo);
 }
 
-/**
- * RF-C4 — Cuenta corriente cronológica con saldo acumulado en cada movimiento (regla 7).
- */
 export async function getCuentaCorriente(
   _user: SessionUser,
   id: number,
@@ -330,6 +308,5 @@ export async function getCuentaCorriente(
   };
 }
 
-// silence
 void count;
 void like;

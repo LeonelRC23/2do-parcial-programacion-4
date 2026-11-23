@@ -33,11 +33,13 @@ function pesosToCentavos(value: string): number {
 
 export function ProductoFormDialog({
   categorias,
+  abrirInicial = false,
 }: {
   categorias: Categoria[];
+  abrirInicial?: boolean;
 }) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(abrirInicial);
   const [pending, setPending] = useState(false);
   const [codigo, setCodigo] = useState("");
   const [descripcion, setDescripcion] = useState("");
@@ -47,6 +49,22 @@ export function ProductoFormDialog({
   const [precio, setPrecio] = useState("");
   const [stockMinimo, setStockMinimo] = useState("0");
   const [stockInicial, setStockInicial] = useState("0");
+
+  function cambiarOpen(nuevoOpen: boolean) {
+    setOpen(nuevoOpen);
+    if (!nuevoOpen && typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has("nuevo")) {
+        params.delete("nuevo");
+        const qs = params.toString();
+        window.history.replaceState(
+          null,
+          "",
+          `${window.location.pathname}${qs ? `?${qs}` : ""}`,
+        );
+      }
+    }
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -84,7 +102,7 @@ export function ProductoFormDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={cambiarOpen}>
       <DialogTrigger asChild>
         <Button>
           <Plus className="size-4" />

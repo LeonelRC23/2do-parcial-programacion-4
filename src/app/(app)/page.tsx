@@ -3,6 +3,7 @@ import { getSessionUser } from "@/lib/auth/session";
 import { getTablero } from "@/lib/services/tablero";
 import { PageHeader } from "@/components/layout/page-header";
 import { Stack } from "@/components/layout/stack";
+import { Cluster } from "@/components/layout/cluster";
 import { Money } from "@/components/shared/money";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -58,9 +59,16 @@ export default async function DashboardPage() {
         title="Inicio"
         description="Resumen operativo del negocio"
         actions={
-          <Button asChild>
-            <Link href="/ventas/nueva">Nueva venta</Link>
-          </Button>
+          <Cluster>
+            {user.rol === "admin" ? (
+              <Button variant="outline" asChild>
+                <Link href="/productos?nuevo=1">Nuevo producto</Link>
+              </Button>
+            ) : null}
+            <Button asChild>
+              <Link href="/ventas/nueva">Nueva venta</Link>
+            </Button>
+          </Cluster>
         }
       />
 

@@ -41,7 +41,12 @@ export function AppTopbar({ user }: { user: SessionUser }) {
             Perfil
           </Link>
         </Button>
-        <Button variant="outline" size="sm" onClick={handleLogout}>
+        <Button
+          variant="destructive"
+          size="sm"
+          className="bg-destructive text-white hover:bg-destructive/90"
+          onClick={handleLogout}
+        >
           <LogOut className="size-4" />
           Salir
         </Button>

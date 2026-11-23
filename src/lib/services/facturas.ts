@@ -1,5 +1,6 @@
-import { and, count, desc, eq, like, or, sql } from "drizzle-orm";
+import { and, count, desc, eq, or, sql } from "drizzle-orm";
 import { db, type Tx } from "@/lib/db";
+import { buscarTexto } from "@/lib/db/search";
 import {
   clientes,
   contadores,
@@ -396,7 +397,7 @@ export async function listFacturas(
         numMatch
           ? eq(facturas.numero, Number(numMatch) || -1)
           : sql`0`,
-        sql`exists (select 1 from clientes c where c.id = ${facturas.clienteId} and c.nombre like ${"%" + terminoBusqueda + "%"})`,
+        sql`exists (select 1 from clientes c where c.id = ${facturas.clienteId} and ${buscarTexto(sql`c.nombre`, terminoBusqueda)})`,
       )!,
     );
   }
@@ -523,4 +524,3 @@ export async function anularFactura(
   }).then(() => buildFacturaResponse(id));
 }
 
-void like;

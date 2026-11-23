@@ -1,5 +1,6 @@
-import { and, count, desc, eq, like, or, sql } from "drizzle-orm";
+import { and, count, desc, eq, or, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
+import { buscarTexto } from "@/lib/db/search";
 import {
   categorias,
   facturas,
@@ -55,11 +56,10 @@ export async function listProductos(
   }
 
   if (query.q) {
-    const searchPattern = `%${query.q}%`;
     conditions.push(
       or(
-        like(productos.codigo, searchPattern),
-        like(productos.descripcion, searchPattern),
+        buscarTexto(productos.codigo, query.q),
+        buscarTexto(productos.descripcion, query.q),
       )!,
     );
   }

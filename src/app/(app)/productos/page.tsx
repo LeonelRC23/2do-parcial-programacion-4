@@ -66,7 +66,10 @@ export default async function ProductosPage({
                 <Button variant="outline" asChild>
                   <Link href="/productos/categorias">Categorías</Link>
                 </Button>
-                <ProductoFormDialog categorias={categorias} />
+                <ProductoFormDialog
+                  categorias={categorias}
+                  abrirInicial={sp.nuevo === "1"}
+                />
               </>
             ) : null}
           </Cluster>

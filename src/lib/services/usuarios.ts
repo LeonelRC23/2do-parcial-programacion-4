@@ -1,5 +1,6 @@
-import { and, count, desc, eq, like, or, sql } from "drizzle-orm";
+import { and, count, desc, eq, or, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
+import { buscarTexto } from "@/lib/db/search";
 import { usuarios } from "@/lib/db/schema";
 import { ApiError } from "@/lib/api/errors";
 import {
@@ -32,11 +33,10 @@ export async function listUsuarios(
 
   const whereConditions = [];
   if (query.q) {
-    const searchPattern = `%${query.q}%`;
     whereConditions.push(
       or(
-        like(usuarios.nombre, searchPattern),
-        like(usuarios.email, searchPattern),
+        buscarTexto(usuarios.nombre, query.q),
+        buscarTexto(usuarios.email, query.q),
       )!,
     );
   }

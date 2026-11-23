@@ -1,5 +1,6 @@
-import { and, count, desc, eq, like, or, sql } from "drizzle-orm";
+import { and, desc, eq, like, or, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
+import { buscarTexto } from "@/lib/db/search";
 import {
   clientes,
   facturas,
@@ -76,12 +77,11 @@ export async function listClientes(
   if (query.q) {
     const terminoBusqueda = query.q.trim();
     const documentoNormalizado = `%${normalizarDocumento(terminoBusqueda)}%`;
-    const patronNombre = `%${terminoBusqueda}%`;
     conditions.push(
       or(
-        like(clientes.nombre, patronNombre),
+        buscarTexto(clientes.nombre, terminoBusqueda),
         like(clientes.nroDocNorm, documentoNormalizado),
-        like(clientes.nroDoc, patronNombre),
+        buscarTexto(clientes.nroDoc, terminoBusqueda),
       )!,
     );
   }
@@ -216,8 +216,8 @@ export async function updateCliente(
   }
 
   let nroDocNorm = cliente.nroDocNorm;
-  let nroDoc = data.nroDoc ?? cliente.nroDoc;
-  let tipoDoc = data.tipoDoc ?? cliente.tipoDoc;
+  const nroDoc = data.nroDoc ?? cliente.nroDoc;
+  const tipoDoc = data.tipoDoc ?? cliente.tipoDoc;
 
   if (data.nroDoc || data.tipoDoc) {
     nroDocNorm = normalizarDocumento(nroDoc);
@@ -308,5 +308,3 @@ export async function getCuentaCorriente(
   };
 }
 
-void count;
-void like;

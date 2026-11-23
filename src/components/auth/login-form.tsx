@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Wrench } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -48,9 +48,14 @@ export function LoginForm() {
       />
       <Card className="relative z-10 w-full max-w-md shadow-sm">
         <CardHeader className="items-center text-center">
-          <span className="mb-2 flex size-12 items-center justify-center rounded-xl bg-amber-600 text-white">
-            <Wrench className="size-5" />
-          </span>
+          <Image
+            src="/logo-el-tornillo.jpg"
+            alt="Ferretería El Tornillo"
+            width={88}
+            height={88}
+            priority
+            className="mx-auto mb-2 rounded-xl"
+          />
           <CardTitle className="font-heading text-xl">
             Gestión Comercial
           </CardTitle>

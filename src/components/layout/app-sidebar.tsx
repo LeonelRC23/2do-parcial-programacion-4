@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -10,7 +11,6 @@ import {
   Users,
   UserCog,
   Menu,
-  Wrench,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -78,16 +78,15 @@ function NavLinks({
 
 function Brand() {
   return (
-    <div className="flex items-center gap-2.5 px-5 py-5">
-      <span className="flex size-9 items-center justify-center rounded-lg bg-amber-600 text-white shadow-sm">
-        <Wrench className="size-4" />
-      </span>
-      <div className="min-w-0">
-        <p className="truncate font-heading text-sm font-semibold text-slate-900">
-          Gestión Comercial
-        </p>
-        <p className="truncate text-xs text-slate-500">Ferretería</p>
-      </div>
+    <div className="px-4 py-4">
+      <Image
+        src="/logo-el-tornillo.jpg"
+        alt="Ferretería El Tornillo"
+        width={120}
+        height={120}
+        priority
+        className="mx-auto h-auto w-full max-w-[120px] rounded-lg"
+      />
     </div>
   );
 }

@@ -3,6 +3,7 @@ import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 import { migrate } from "drizzle-orm/libsql/migrator";
 
+/** Aplica las migraciones de drizzle/ a la base configurada. */
 async function main() {
   const url = process.env.DATABASE_URL ?? "file:./local.db";
   const authToken = process.env.DATABASE_AUTH_TOKEN;

@@ -1,6 +1,7 @@
 import { formatMoney } from "@/lib/format";
 import { cn } from "@/lib/utils";
 
+/** Muestra un importe en centavos con formato argentino. */
 export function Money({
   value,
   centavos,

@@ -18,6 +18,7 @@ type MoverStockInput = {
   usuarioId: number;
 };
 
+/** Única vía para cambiar existencia: UPDATE atómico + movimiento. */
 export async function moverStock(tx: Tx, input: MoverStockInput) {
   const {
     productoId,
@@ -91,6 +92,7 @@ export async function moverStock(tx: Tx, input: MoverStockInput) {
   return movimiento;
 }
 
+/** Ingreso o egreso manual de stock (solo admin). */
 export async function registrarMovimientoManual(
   sessionUser: SessionUser,
   productoId: number,

@@ -8,6 +8,7 @@ import {
 } from "@/lib/services/clientes";
 import { registrarPago } from "@/lib/services/pagos";
 
+/** Server Action: alta de cliente. */
 export async function crearClienteAction(raw: unknown) {
   const result = await runAction((user) => createCliente(user, raw));
   if (result.ok) {
@@ -17,6 +18,7 @@ export async function crearClienteAction(raw: unknown) {
   return result;
 }
 
+/** Server Action: edición o baja de cliente. */
 export async function actualizarClienteAction(
   clienteId: number,
   raw: unknown,
@@ -32,6 +34,7 @@ export async function actualizarClienteAction(
   return result;
 }
 
+/** Server Action: pago en cuenta corriente. */
 export async function registrarPagoAction(
   clienteId: number,
   raw: unknown,

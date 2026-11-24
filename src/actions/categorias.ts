@@ -7,6 +7,7 @@ import {
   updateCategoria,
 } from "@/lib/services/categorias";
 
+/** Server Action: alta de categoría (admin). */
 export async function crearCategoriaAction(raw: unknown) {
   const result = await runAction((user) => createCategoria(user, raw), {
     admin: true,
@@ -15,6 +16,7 @@ export async function crearCategoriaAction(raw: unknown) {
   return result;
 }
 
+/** Server Action: edición de categoría (admin). */
 export async function actualizarCategoriaAction(
   categoriaId: number,
   raw: unknown,

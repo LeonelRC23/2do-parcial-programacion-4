@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 
 const SESSION_COOKIE = "gc_session";
 
+/** Barrera previa: exige cookie de sesión salvo login. */
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 

@@ -25,6 +25,7 @@ import {
 import { moverStock } from "./stock";
 import { saldoCliente } from "./clientes";
 
+/** Reserva el próximo número correlativo de factura. */
 async function nextFacturaNumero(tx: Tx): Promise<number> {
   const clave = "factura";
   const contadorExistente = await tx.query.contadores.findFirst({
@@ -42,6 +43,7 @@ async function nextFacturaNumero(tx: Tx): Promise<number> {
   return siguienteNumero;
 }
 
+/** Arma el DTO completo de una factura (ítems, pago, anulación). */
 async function buildFacturaResponse(facturaId: number) {
   const factura = await db.query.facturas.findFirst({
     where: eq(facturas.id, facturaId),
@@ -129,6 +131,7 @@ async function buildFacturaResponse(facturaId: number) {
   return result;
 }
 
+/** Emite una factura en una transacción (stock, número, CC). */
 export async function crearFactura(user: SessionUser, raw: unknown) {
   if (raw && typeof raw === "object") {
     const pago = (raw as { pago?: { tarjeta?: Record<string, unknown> } }).pago;
@@ -348,6 +351,7 @@ export async function crearFactura(user: SessionUser, raw: unknown) {
   });
 }
 
+/** Listado paginado de facturas con filtros. */
 export async function listFacturas(
   _user: SessionUser,
   query: {
@@ -453,10 +457,12 @@ export async function listFacturas(
   };
 }
 
+/** Detalle de una factura. */
 export async function getFactura(_user: SessionUser, id: number) {
   return buildFacturaResponse(id);
 }
 
+/** Consulta informativa del próximo número de factura. */
 export async function proximoNumero(_user: SessionUser) {
   const row = await db.query.contadores.findFirst({
     where: eq(contadores.clave, "factura"),
@@ -467,6 +473,7 @@ export async function proximoNumero(_user: SessionUser) {
   };
 }
 
+/** Anula una factura (admin): reingresa stock y crédito en CC. */
 export async function anularFactura(
   user: SessionUser,
   id: number,

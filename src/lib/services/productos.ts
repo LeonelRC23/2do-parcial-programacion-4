@@ -18,6 +18,7 @@ import { requireAdmin } from "@/lib/auth/session";
 import { moverStock } from "./stock";
 import { formatNumeroFactura, sqliteToIso } from "@/lib/format";
 
+/** DTO público del producto (incluye bajo mínimo). */
 function mapProducto(
   producto: typeof productos.$inferSelect,
   categoria: { id: number; nombre: string },
@@ -35,6 +36,7 @@ function mapProducto(
   };
 }
 
+/** Catálogo paginado con búsqueda y filtros. */
 export async function listProductos(
   user: SessionUser,
   query: {
@@ -97,6 +99,7 @@ export async function listProductos(
   };
 }
 
+/** Ficha de un producto. */
 export async function getProducto(_user: SessionUser, id: number) {
   const row = await db
     .select({
@@ -114,6 +117,7 @@ export async function getProducto(_user: SessionUser, id: number) {
   return mapProducto(row[0].producto, row[0].categoria);
 }
 
+/** Alta de producto; stock inicial como ingreso (admin). */
 export async function createProducto(user: SessionUser, raw: unknown) {
   requireAdmin(user);
   const data = createProductoSchema.parse(raw);
@@ -164,6 +168,7 @@ export async function createProducto(user: SessionUser, raw: unknown) {
   });
 }
 
+/** Edición o baja lógica de producto (admin). */
 export async function updateProducto(
   user: SessionUser,
   id: number,
@@ -223,6 +228,7 @@ export async function updateProducto(
   return mapProducto(updated, categoria!);
 }
 
+/** Historial de stock de un producto. */
 export async function listMovimientosProducto(
   _user: SessionUser,
   productoId: number,
@@ -285,6 +291,7 @@ export async function listMovimientosProducto(
   };
 }
 
+/** Listado global de movimientos de stock. */
 export async function listMovimientosStock(
   _user: SessionUser,
   query: {

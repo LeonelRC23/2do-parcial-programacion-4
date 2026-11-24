@@ -8,6 +8,7 @@ import {
 } from "@/lib/services/productos";
 import { registrarMovimientoManual } from "@/lib/services/stock";
 
+/** Server Action: alta de producto (admin). */
 export async function crearProductoAction(raw: unknown) {
   const result = await runAction((user) => createProducto(user, raw), {
     admin: true,
@@ -19,6 +20,7 @@ export async function crearProductoAction(raw: unknown) {
   return result;
 }
 
+/** Server Action: edición o baja de producto (admin). */
 export async function actualizarProductoAction(
   productoId: number,
   raw: unknown,
@@ -34,6 +36,7 @@ export async function actualizarProductoAction(
   return result;
 }
 
+/** Server Action: ingreso/egreso manual de stock (admin). */
 export async function movimientoStockAction(
   productoId: number,
   raw: unknown,

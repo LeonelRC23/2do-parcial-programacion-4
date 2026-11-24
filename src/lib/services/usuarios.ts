@@ -14,6 +14,7 @@ import {
 import type { SessionUser } from "@/lib/auth/session";
 import { requireAdmin } from "@/lib/auth/session";
 
+/** Usuario sin passwordHash. */
 function toPublicUsuario(usuario: typeof usuarios.$inferSelect) {
   return {
     id: usuario.id,
@@ -25,6 +26,7 @@ function toPublicUsuario(usuario: typeof usuarios.$inferSelect) {
   };
 }
 
+/** Listado paginado de usuarios (admin). */
 export async function listUsuarios(
   sessionUser: SessionUser,
   query: { q?: string; activo?: string; page: number; pageSize: number },
@@ -67,6 +69,7 @@ export async function listUsuarios(
   };
 }
 
+/** Alta de usuario (admin). */
 export async function createUsuario(sessionUser: SessionUser, raw: unknown) {
   requireAdmin(sessionUser);
   const nuevoUsuario = createUsuarioSchema.parse(raw);
@@ -93,6 +96,7 @@ export async function createUsuario(sessionUser: SessionUser, raw: unknown) {
   return toPublicUsuario(usuarioCreado);
 }
 
+/** Edición o baja lógica de usuario (admin). */
 export async function updateUsuario(
   sessionUser: SessionUser,
   usuarioId: number,
@@ -141,6 +145,7 @@ export async function updateUsuario(
   return toPublicUsuario(usuarioActualizado);
 }
 
+/** Restablece la contraseña y devuelve una temporal (admin). */
 export async function resetPassword(
   sessionUser: SessionUser,
   usuarioId: number,

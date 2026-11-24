@@ -18,6 +18,7 @@ import {
   sqliteToIso,
 } from "@/lib/format";
 
+/** Calcula el saldo: débitos menos créditos. */
 export async function saldoCliente(
   clienteId: number,
   untilExclusive?: string,
@@ -37,6 +38,7 @@ export async function saldoCliente(
   return Number(row?.saldo ?? 0);
 }
 
+/** DTO público del cliente con saldo y disponible. */
 function mapCliente(
   cliente: typeof clientes.$inferSelect,
   saldo: number,
@@ -59,6 +61,7 @@ function mapCliente(
   };
 }
 
+/** Listado de clientes con saldo y filtros. */
 export async function listClientes(
   _user: SessionUser,
   query: {
@@ -124,6 +127,7 @@ export async function listClientes(
   };
 }
 
+/** Ficha del cliente con saldo y últimas facturas. */
 export async function getCliente(_user: SessionUser, id: number) {
   const cliente = await db.query.clientes.findFirst({
     where: eq(clientes.id, id),
@@ -153,6 +157,7 @@ export async function getCliente(_user: SessionUser, id: number) {
   };
 }
 
+/** Alta de cliente (documento único). */
 export async function createCliente(_user: SessionUser, raw: unknown) {
   const data = createClienteSchema.parse(raw);
   const nroDocNorm = normalizarDocumento(data.nroDoc);
@@ -189,6 +194,7 @@ export async function createCliente(_user: SessionUser, raw: unknown) {
   return mapCliente(created, 0);
 }
 
+/** Edición o baja lógica de cliente. */
 export async function updateCliente(
   _user: SessionUser,
   id: number,
@@ -252,6 +258,7 @@ export async function updateCliente(
   return mapCliente(updated, saldo);
 }
 
+/** Movimientos de cuenta con saldo acumulado. */
 export async function getCuentaCorriente(
   _user: SessionUser,
   id: number,

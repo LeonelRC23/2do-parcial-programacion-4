@@ -15,6 +15,7 @@ export type ActionFail = {
 };
 export type ActionResult<T> = ActionOk<T> | ActionFail;
 
+/** Envuelve Server Actions con sesión, rol y errores tipados. */
 export async function runAction<T>(
   fn: (user: SessionUser) => Promise<T>,
   options: { admin?: boolean } = {},

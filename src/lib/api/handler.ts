@@ -16,6 +16,7 @@ type ApiHandlerOptions = {
   admin?: boolean;
 };
 
+/** Envuelve Route Handlers: sesión, permisos y errores estándar. */
 export function apiHandler(
   handler: RouteHandler,
   options: ApiHandlerOptions = {},
@@ -54,6 +55,7 @@ export function apiHandler(
   };
 }
 
+/** Lee el body JSON o lanza 400 si es inválido. */
 export async function readJson(request: NextRequest): Promise<unknown> {
   try {
     return await request.json();
@@ -62,14 +64,17 @@ export async function readJson(request: NextRequest): Promise<unknown> {
   }
 }
 
+/** Respuesta JSON con status (por defecto 200). */
 export function json(data: unknown, status = 200) {
   return NextResponse.json(data, { status });
 }
 
+/** Respuesta vacía 204. */
 export function noContent() {
   return new NextResponse(null, { status: 204 });
 }
 
+/** Traduce errores a la forma JSON de la API. */
 export function toErrorResponse(error: unknown) {
   if (error instanceof ApiError) {
     return NextResponse.json(error.toJSON(), { status: error.status });
@@ -104,6 +109,7 @@ export function toErrorResponse(error: unknown) {
   );
 }
 
+/** Extrae page y pageSize de la query. */
 export function parsePagination(url: URL) {
   const page = Math.max(1, Number(url.searchParams.get("page") ?? 1) || 1);
   const requestedPageSize =

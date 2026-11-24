@@ -27,6 +27,7 @@ export type ErrorDetail = Record<string, unknown> & {
   mensaje?: string;
 };
 
+/** Error de dominio que los adaptadores HTTP convierten a JSON. */
 export class ApiError extends Error {
   status: number;
   code: ErrorCode;
@@ -45,6 +46,7 @@ export class ApiError extends Error {
     this.details = details;
   }
 
+  /** Forma pública del error para la respuesta. */
   toJSON() {
     return {
       error: {

@@ -47,6 +47,7 @@ const PRODUCTOS_BASE: {
   stockInicial: number;
 }[] = [];
 
+/** Arma la lista de productos de prueba. */
 function buildProductos() {
   const templates = [
     { pref: "HE", cat: 0, items: ["Martillo carpintero 500 g", "Destornillador phillips N2", "Alicate universal 8\"", "Llave francesa 10\"", "Cinta métrica 5 m", "Nivel aluminio 60 cm"] },
@@ -96,6 +97,7 @@ const CLIENTES_SEED = [
   { tipoDoc: "DNI" as const, nroDoc: "29.110.334", nombre: "Valentina Ruiz", domicilio: "Independencia 90", telefono: "381 400-7788", email: "vale.ruiz@correo.test", cuentaCorriente: true, limiteCredito: 30000000 },
 ];
 
+/** True si el seed ya corrió (admin de prueba existe). */
 async function alreadySeeded() {
   const u = await db.query.usuarios.findFirst({
     where: eq(usuarios.email, "laura@ferreteria.test"),
@@ -103,6 +105,7 @@ async function alreadySeeded() {
   return !!u;
 }
 
+/** Carga usuarios, catálogo, clientes y facturas de demo. */
 async function main() {
   buildProductos();
 

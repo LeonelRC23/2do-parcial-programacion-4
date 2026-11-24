@@ -9,6 +9,7 @@ import {
 import { hashPassword, verifyPassword } from "@/lib/auth/password";
 import type { SessionUser } from "@/lib/auth/session";
 
+/** Proyecta el usuario sin el hash de contraseña. */
 function toPublicUser(usuario: {
   id: number;
   nombre: string;
@@ -23,6 +24,7 @@ function toPublicUser(usuario: {
   };
 }
 
+/** Valida credenciales y devuelve el usuario público. */
 export async function login(raw: unknown) {
   const credentials = loginSchema.parse(raw);
 
@@ -53,6 +55,7 @@ export async function login(raw: unknown) {
   return toPublicUser(usuario);
 }
 
+/** Cambia la contraseña del usuario conectado. */
 export async function changePassword(sessionUser: SessionUser, raw: unknown) {
   const passwords = changePasswordSchema.parse(raw);
 

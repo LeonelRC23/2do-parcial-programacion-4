@@ -17,6 +17,7 @@ import {
 } from "@/lib/format";
 import { saldoCliente } from "./clientes";
 
+/** Reserva el próximo número de recibo. */
 async function nextReciboNumero(tx: Tx): Promise<number> {
   const clave = "recibo";
   const contadorExistente = await tx.query.contadores.findFirst({
@@ -34,6 +35,7 @@ async function nextReciboNumero(tx: Tx): Promise<number> {
   return siguienteNumero;
 }
 
+/** DTO público de un pago/recibo. */
 function mapPago(
   pago: typeof pagos.$inferSelect,
   cliente: { id: number; nombre: string },
@@ -53,6 +55,7 @@ function mapPago(
   };
 }
 
+/** Registra un pago en cuenta corriente (no supera la deuda). */
 export async function registrarPago(
   user: SessionUser,
   clienteId: number,
@@ -117,6 +120,7 @@ export async function registrarPago(
   });
 }
 
+/** Recibo de pago para reimpresión. */
 export async function getPago(_user: SessionUser, id: number) {
   const pago = await db.query.pagos.findFirst({
     where: eq(pagos.id, id),

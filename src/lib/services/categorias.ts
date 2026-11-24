@@ -9,6 +9,7 @@ import {
 import type { SessionUser } from "@/lib/auth/session";
 import { requireAdmin } from "@/lib/auth/session";
 
+/** Lista categorías activas. */
 export async function listCategorias(_sessionUser: SessionUser) {
   return db.query.categorias.findMany({
     where: eq(categorias.activa, true),
@@ -16,6 +17,7 @@ export async function listCategorias(_sessionUser: SessionUser) {
   });
 }
 
+/** Alta de categoría (admin). */
 export async function createCategoria(sessionUser: SessionUser, raw: unknown) {
   requireAdmin(sessionUser);
   const nuevaCategoria = createCategoriaSchema.parse(raw);
@@ -38,6 +40,7 @@ export async function createCategoria(sessionUser: SessionUser, raw: unknown) {
   return categoriaCreada;
 }
 
+/** Edición o desactivación de categoría (admin). */
 export async function updateCategoria(
   sessionUser: SessionUser,
   categoriaId: number,

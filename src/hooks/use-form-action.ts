@@ -11,6 +11,7 @@ type Options = {
   onSuccess?: () => void;
 };
 
+/** Maneja pending, errores de campo y toasts al correr una action. */
 export function useFormAction(options: Options = {}) {
   const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState<string | null>(null);

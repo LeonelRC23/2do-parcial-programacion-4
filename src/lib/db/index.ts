@@ -2,6 +2,7 @@ import { createClient } from "@libsql/client";
 import { drizzle } from "drizzle-orm/libsql";
 import * as schema from "./schema";
 
+/** Crea la conexión Drizzle sobre libSQL/Turso o SQLite local. */
 function createDb() {
   const url = process.env.DATABASE_URL ?? "file:./local.db";
   const authToken = process.env.DATABASE_AUTH_TOKEN;

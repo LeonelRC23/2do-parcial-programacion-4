@@ -1,3 +1,4 @@
+/** Error del cliente cuando /api responde con fallo. */
 export class ApiClientError extends Error {
   status: number;
   code: string;
@@ -18,6 +19,7 @@ export class ApiClientError extends Error {
 
 export { ApiClientError as ClientApiError };
 
+/** Fetch tipado hacia la API REST. */
 export async function fetchJson<T = unknown>(
   url: string,
   init?: RequestInit,

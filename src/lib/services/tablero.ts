@@ -11,6 +11,7 @@ import { fechaArgentina } from "@/lib/format";
 import { formatInTimeZone } from "date-fns-tz";
 import { subDays, parseISO } from "date-fns";
 
+/** Indicadores del tablero: ventas, deudas, stock y gráficos. */
 export async function getTablero(_user: SessionUser) {
   const hoy = fechaArgentina();
   const mes = hoy.slice(0, 7);

@@ -131,6 +131,15 @@ export function LoginForm() {
           </form>
         </CardContent>
       </Card>
+
+      <aside className="pointer-events-none absolute bottom-4 right-4 z-10 text-right text-xs leading-relaxed text-slate-500">
+        <p className="font-medium text-slate-600">Grupo 20</p>
+        <ul className="mt-0.5 list-none">
+          <li>Cordero Leonel Rodrigo</li>
+          <li>Zottola Ignacio</li>
+          <li>Gonzalez Octavio</li>
+        </ul>
+      </aside>
     </div>
   );
 }
